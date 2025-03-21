@@ -78,7 +78,7 @@ export default function Home() {
               </p>
               <div className="flex justify-center space-x-6">
                 <a
-                  href="https://discord.gg/KsJBVU8m"
+                  href="https://discord.gg/xqSecMsNVr"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-foreground/80 hover:text-foreground transition-colors duration-300"
