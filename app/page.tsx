@@ -78,7 +78,9 @@ export default function Home() {
               </p>
               <div className="flex justify-center space-x-6">
                 <a
-                  href="discord.gg/KsJBVU8m"
+                  href="https://discord.gg/KsJBVU8m"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-foreground/80 hover:text-foreground transition-colors duration-300"
                 >
                   <MessageSquare className="h-6 w-6" />
@@ -86,6 +88,8 @@ export default function Home() {
                 </a>
                 <a
                   href="https://github.com/AkihikoIzuru"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-foreground/80 hover:text-foreground transition-colors duration-300"
                 >
                   <GithubIcon className="h-6 w-6" />
