@@ -1,9 +1,6 @@
-import { AuroraBackground } from "@/components/aurora-background";
-
 export default function AboutPage() {
   return (
     <div className="relative min-h-[calc(100vh-4rem)] w-full overflow-hidden bg-gradient-to-b from-background to-background/80 transition-colors duration-500">
-      <AuroraBackground />
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-3xl mx-auto">

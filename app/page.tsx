@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { AuroraBackground } from "@/components/aurora-background";
 import { GithubIcon, LinkedinIcon, MailIcon } from "lucide-react";
 import { MessageSquare } from "lucide-react";
 import Link from "next/link";
@@ -7,7 +6,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-background to-background/80 transition-colors duration-500">
-      <AuroraBackground />
       <div className="relative z-10">
         <main className="container mx-auto px-4">
           <section className="flex flex-col items-center justify-center py-20 md:py-32 text-center">
