@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,10 +49,11 @@ export function Navbar() {
     setIsOpen(false);
   }, [pathname]);
 
-  // Update the navItems array to include the About page instead of using a hash link
+  // Update the navItems array to include the Journey page
   const navItems = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
+    { name: "Journey", path: "/journey" },
     { name: "Tasks", path: "/tasks" },
     { name: "Profile", path: "/profile" },
   ];
@@ -100,62 +101,85 @@ export function Navbar() {
         </nav>
 
         {/* Mobile Navigation Toggle */}
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-4 md:hidden">
           <ThemeToggle />
-          <Button
-            variant="ghost"
-            size="icon"
+          <button
             onClick={toggleMenu}
-            className="md:hidden"
+            className="flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none"
+            aria-label="Toggle menu"
           >
-            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            <span className="sr-only">Toggle menu</span>
-          </Button>
+            <motion.span
+              animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+              className="block h-0.5 w-6 bg-foreground transition-transform"
+            />
+            <motion.span
+              animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
+              className="block h-0.5 w-6 bg-foreground"
+            />
+            <motion.span
+              animate={isOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+              className="block h-0.5 w-6 bg-foreground transition-transform"
+            />
+          </button>
         </div>
       </div>
 
       {/* Mobile Navigation Menu */}
-      {isOpen && (
-        <div className="fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto bg-background p-6 pb-32 shadow-md animate-in slide-in-from-top-1 md:hidden">
-          <div className="grid gap-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                href={item.path}
-                className={`flex items-center py-2 text-lg ${
-                  pathname === item.path
-                    ? "text-foreground font-medium"
-                    : "text-foreground/60"
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="md:hidden overflow-hidden bg-background border-b"
+          >
+            <div className="container py-4 space-y-4">
+              {navItems.map((item, index) => (
+                <motion.div
+                  key={item.path}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.3 }}
+                >
+                  <Link
+                    href={item.path}
+                    className={`block py-2 text-lg ${
+                      pathname === item.path
+                        ? "text-foreground font-medium"
+                        : "text-foreground/60"
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                </motion.div>
+              ))}
 
-            {!loading && (
-              <>
-                {user ? (
-                  <Button
-                    variant="ghost"
-                    className="justify-start px-2"
-                    onClick={handleSignOut}
-                  >
-                    Sign Out
-                  </Button>
-                ) : (
-                  <Button
-                    variant="default"
-                    className="justify-start px-2"
-                    asChild
-                  >
-                    <Link href="/auth">Sign In</Link>
-                  </Button>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-      )}
+              {!loading && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: navItems.length * 0.1, duration: 0.3 }}
+                >
+                  {user ? (
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start px-0 py-2 h-auto"
+                      onClick={handleSignOut}
+                    >
+                      Sign Out
+                    </Button>
+                  ) : (
+                    <Button variant="default" className="w-full mt-2" asChild>
+                      <Link href="/auth">Sign In</Link>
+                    </Button>
+                  )}
+                </motion.div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
